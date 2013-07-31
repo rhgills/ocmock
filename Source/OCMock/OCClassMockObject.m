@@ -55,9 +55,18 @@ static NSMutableDictionary *mockTable;
 
 - (id)initWithClass:(Class)aClass
 {
-	[super init];
-	mockedClass = aClass;
-	return self;
+    return [self initWithClass:aClass isNice:NO];
+}
+
+- (id)initWithClass:(Class)aClass isNice:(BOOL)shouldBeNice;
+{
+    self = [super init];
+    if (!self) return nil;
+    
+    mockedClass = aClass;
+    isNice = shouldBeNice;
+    
+    return self;
 }
 
 - (void)dealloc

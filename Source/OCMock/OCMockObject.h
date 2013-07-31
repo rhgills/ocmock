@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
+#import "OCMockTestCaseFailer.h"
 
 @interface OCMockObject : NSProxy
 {
@@ -35,6 +36,8 @@
 - (void)verify;
 
 - (void)stopMocking;
+
+@property (retain) id <OCMockTestCaseFailer> failureReporter;
 
 // internal use only
 + (void)setCurrentTestCase:(id)theTestCase;

@@ -6,8 +6,5 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 @interface OCMockObjectTests : SenTestCase
-{
-	id mock;
-}
 
 @end

@@ -117,6 +117,19 @@
 		03B3168D14633B1D0052CD09 /* OCHamcrest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B3168C14633B1D0052CD09 /* OCHamcrest.framework */; };
 		03B3168E14633D9C0052CD09 /* OCMock.h in Headers */ = {isa = PBXBuildFile; fileRef = 030EF0B814632FD000B04273 /* OCMock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */; };
+		4B16999B17A9789B002160CA /* OCMockSenTestCaseFailer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B16999917A9789B002160CA /* OCMockSenTestCaseFailer.h */; };
+		4B16999C17A9789B002160CA /* OCMockSenTestCaseFailer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B16999917A9789B002160CA /* OCMockSenTestCaseFailer.h */; };
+		4B16999D17A9789B002160CA /* OCMockSenTestCaseFailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B16999A17A9789B002160CA /* OCMockSenTestCaseFailer.m */; };
+		4B16999E17A9789B002160CA /* OCMockSenTestCaseFailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B16999A17A9789B002160CA /* OCMockSenTestCaseFailer.m */; };
+		4B1699A117A978A6002160CA /* OCMockRaiseExceptionFailer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B16999F17A978A6002160CA /* OCMockRaiseExceptionFailer.h */; };
+		4B1699A217A978A6002160CA /* OCMockRaiseExceptionFailer.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B16999F17A978A6002160CA /* OCMockRaiseExceptionFailer.h */; };
+		4B1699A317A978A6002160CA /* OCMockRaiseExceptionFailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699A017A978A6002160CA /* OCMockRaiseExceptionFailer.m */; };
+		4B1699A417A978A6002160CA /* OCMockRaiseExceptionFailer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699A017A978A6002160CA /* OCMockRaiseExceptionFailer.m */; };
+		4B1699A817A982CF002160CA /* OCMockFakeFailureReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699A717A982CF002160CA /* OCMockFakeFailureReporter.m */; };
+		4B1699AB17A9831D002160CA /* TestClassWithSelectorMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699AA17A9831D002160CA /* TestClassWithSelectorMethod.m */; };
+		4B1699AE17A9833F002160CA /* TestClassWithTypeQualifierMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699AD17A9833F002160CA /* TestClassWithTypeQualifierMethod.m */; };
+		4B1699B117A98356002160CA /* TestClassWithIntPointerMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699B017A98356002160CA /* TestClassWithIntPointerMethod.m */; };
+		4B1699B417A98372002160CA /* NotificationRecorderForTesting.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699B317A98372002160CA /* NotificationRecorderForTesting.m */; };
 		4BAE8CF317A898C300076342 /* RHGTestsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAE8CF217A898C300076342 /* RHGTestsTestCase.m */; };
 /* End PBXBuildFile section */
 
@@ -209,6 +222,21 @@
 		03B3169014633FAB0052CD09 /* License.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = License.txt; sourceTree = "<group>"; };
 		2FA286BFBD8B9D068B41E7EF /* OCMockObjectProtocolMocksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockObjectProtocolMocksTests.m; sourceTree = "<group>"; };
 		2FA28CDB493350BF1DD26DC3 /* OCMockObjectProtocolMocksTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObjectProtocolMocksTests.h; sourceTree = "<group>"; };
+		4B16999817A9788E002160CA /* OCMockTestCaseFailer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMockTestCaseFailer.h; sourceTree = "<group>"; };
+		4B16999917A9789B002160CA /* OCMockSenTestCaseFailer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockSenTestCaseFailer.h; sourceTree = "<group>"; };
+		4B16999A17A9789B002160CA /* OCMockSenTestCaseFailer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockSenTestCaseFailer.m; sourceTree = "<group>"; };
+		4B16999F17A978A6002160CA /* OCMockRaiseExceptionFailer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRaiseExceptionFailer.h; sourceTree = "<group>"; };
+		4B1699A017A978A6002160CA /* OCMockRaiseExceptionFailer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockRaiseExceptionFailer.m; sourceTree = "<group>"; };
+		4B1699A617A982CF002160CA /* OCMockFakeFailureReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockFakeFailureReporter.h; sourceTree = "<group>"; };
+		4B1699A717A982CF002160CA /* OCMockFakeFailureReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCMockFakeFailureReporter.m; sourceTree = "<group>"; };
+		4B1699A917A9831D002160CA /* TestClassWithSelectorMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClassWithSelectorMethod.h; sourceTree = "<group>"; };
+		4B1699AA17A9831D002160CA /* TestClassWithSelectorMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithSelectorMethod.m; sourceTree = "<group>"; };
+		4B1699AC17A9833F002160CA /* TestClassWithTypeQualifierMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClassWithTypeQualifierMethod.h; sourceTree = "<group>"; };
+		4B1699AD17A9833F002160CA /* TestClassWithTypeQualifierMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithTypeQualifierMethod.m; sourceTree = "<group>"; };
+		4B1699AF17A98356002160CA /* TestClassWithIntPointerMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClassWithIntPointerMethod.h; sourceTree = "<group>"; };
+		4B1699B017A98356002160CA /* TestClassWithIntPointerMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClassWithIntPointerMethod.m; sourceTree = "<group>"; };
+		4B1699B217A98372002160CA /* NotificationRecorderForTesting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRecorderForTesting.h; sourceTree = "<group>"; };
+		4B1699B317A98372002160CA /* NotificationRecorderForTesting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRecorderForTesting.m; sourceTree = "<group>"; };
 		4BAE8CF217A898C300076342 /* RHGTestsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHGTestsTestCase.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,6 +331,7 @@
 		030EF0C714632FD000B04273 /* OCMockTests */ = {
 			isa = PBXGroup;
 			children = (
+				4B1699A517A982B9002160CA /* Support */,
 				03B316241463350E0052CD09 /* OCMockObjectTests.h */,
 				03B316251463350E0052CD09 /* OCMockObjectTests.m */,
 				03AC5C1316DF9FA500D82ECD /* OCMockObjectPartialMocksTests.h */,
@@ -377,6 +406,11 @@
 			children = (
 				03B3159D146333BF0052CD09 /* OCMockObject.h */,
 				03B3159E146333BF0052CD09 /* OCMockObject.m */,
+				4B16999817A9788E002160CA /* OCMockTestCaseFailer.h */,
+				4B16999917A9789B002160CA /* OCMockSenTestCaseFailer.h */,
+				4B16999A17A9789B002160CA /* OCMockSenTestCaseFailer.m */,
+				4B16999F17A978A6002160CA /* OCMockRaiseExceptionFailer.h */,
+				4B1699A017A978A6002160CA /* OCMockRaiseExceptionFailer.m */,
 				03B3158B146333BF0052CD09 /* OCClassMockObject.h */,
 				03B3158C146333BF0052CD09 /* OCClassMockObject.m */,
 				03B315AD146333BF0052CD09 /* OCProtocolMockObject.h */,
@@ -465,6 +499,23 @@
 			name = "Invocation Handler";
 			sourceTree = "<group>";
 		};
+		4B1699A517A982B9002160CA /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				4B1699A617A982CF002160CA /* OCMockFakeFailureReporter.h */,
+				4B1699A717A982CF002160CA /* OCMockFakeFailureReporter.m */,
+				4B1699A917A9831D002160CA /* TestClassWithSelectorMethod.h */,
+				4B1699AA17A9831D002160CA /* TestClassWithSelectorMethod.m */,
+				4B1699AC17A9833F002160CA /* TestClassWithTypeQualifierMethod.h */,
+				4B1699AD17A9833F002160CA /* TestClassWithTypeQualifierMethod.m */,
+				4B1699AF17A98356002160CA /* TestClassWithIntPointerMethod.h */,
+				4B1699B017A98356002160CA /* TestClassWithIntPointerMethod.m */,
+				4B1699B217A98372002160CA /* NotificationRecorderForTesting.h */,
+				4B1699B317A98372002160CA /* NotificationRecorderForTesting.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -494,6 +545,8 @@
 				03B31609146333C00052CD09 /* OCPartialMockObject.h in Headers */,
 				03B3160E146333C00052CD09 /* OCPartialMockRecorder.h in Headers */,
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
+				4B16999B17A9789B002160CA /* OCMockSenTestCaseFailer.h in Headers */,
+				4B1699A117A978A6002160CA /* OCMockRaiseExceptionFailer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +582,8 @@
 				03B3163A1463350E0052CD09 /* OCMockObjectTests.h in Headers */,
 				03B3163F1463350E0052CD09 /* OCMockRecorderTests.h in Headers */,
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
+				4B16999C17A9789B002160CA /* OCMockSenTestCaseFailer.h in Headers */,
+				4B1699A217A978A6002160CA /* OCMockRaiseExceptionFailer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +651,7 @@
 		030EF09E14632FD000B04273 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = OCMock;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Mulle Kybernetik";
 			};
@@ -692,6 +748,8 @@
 				03B3160B146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31610146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31615146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
+				4B16999D17A9789B002160CA /* OCMockSenTestCaseFailer.m in Sources */,
+				4B1699A317A978A6002160CA /* OCMockRaiseExceptionFailer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +768,11 @@
 				039F91C616EFB493006C3D70 /* OCMockObjectClassMethodMockingTests.m in Sources */,
 				0354D72016F23AF5001766BB /* OCMockObjectForwardingTargetTests.m in Sources */,
 				2FA2859DB0F5EF004A3FD0D3 /* OCMockObjectProtocolMocksTests.m in Sources */,
+				4B1699A817A982CF002160CA /* OCMockFakeFailureReporter.m in Sources */,
+				4B1699AB17A9831D002160CA /* TestClassWithSelectorMethod.m in Sources */,
+				4B1699AE17A9833F002160CA /* TestClassWithTypeQualifierMethod.m in Sources */,
+				4B1699B117A98356002160CA /* TestClassWithIntPointerMethod.m in Sources */,
+				4B1699B417A98372002160CA /* NotificationRecorderForTesting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +801,8 @@
 				03B3160D146333C00052CD09 /* OCPartialMockObject.m in Sources */,
 				03B31612146333C00052CD09 /* OCPartialMockRecorder.m in Sources */,
 				03B31617146333C00052CD09 /* OCProtocolMockObject.m in Sources */,
+				4B16999E17A9789B002160CA /* OCMockSenTestCaseFailer.m in Sources */,
+				4B1699A417A978A6002160CA /* OCMockRaiseExceptionFailer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

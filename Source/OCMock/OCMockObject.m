@@ -12,7 +12,6 @@
 #import "NSInvocation+OCMAdditions.h"
 
 @interface OCMockObject(Private)
-+ (id)_makeNice:(OCMockObject *)mock;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
 - (void)failWithException:(NSException *)exception;
 - (void)failFastWithException:(NSException *)exception;
@@ -27,26 +26,15 @@
 
 @end
 
-
-#define exceptionToFailWith(format, args...) \
-{ \
-[NSException failureInFile:file atLine:0 withDescription:format, ##args] \
-}
-
 #define failFastWithFormat(format, args...) \
 { \
-NSException *e = exceptionToFailWith(format, ##args); \
-[self failFastWithException:e]; \
+[self failFastWithDescription:[NSString stringWithFormat:format, ##args]]; \
 }
 
 #define failWithFormat(format, args...) \
 { \
-NSException *e = exceptionToFailWith(format, ##args); \
-[self failWithException:e]; \
+[self failWithDescription:[NSString stringWithFormat:format, ##args]]; \
 }
-
-
-
 
 
 @implementation OCMockObject
@@ -80,21 +68,13 @@ NSException *e = exceptionToFailWith(format, ##args); \
 
 + (id)niceMockForClass:(Class)aClass
 {
-	return [self _makeNice:[self mockForClass:aClass]];
+	return [[[OCClassMockObject alloc] initWithClass:aClass isNice:YES] autorelease];
 }
 
 + (id)niceMockForProtocol:(Protocol *)aProtocol
 {
-	return [self _makeNice:[self mockForProtocol:aProtocol]];
+	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol isNice:YES] autorelease];
 }
-
-
-+ (id)_makeNice:(OCMockObject *)mock
-{
-	mock->isNice = YES;
-	return mock;
-}
-
 
 + (id)observerMock
 {
@@ -178,6 +158,21 @@ NSException *e = exceptionToFailWith(format, ##args); \
     }
 }
 
+- (void)failFastWithDescription:(NSString *)description;
+{    
+    [self failFastWithException:[self exceptionWithDescription:description]];
+}
+
+- (void)failWithDescription:(NSString *)description;
+{
+    [self failWithException:[self exceptionWithDescription:description]];
+}
+
+- (NSException *)exceptionWithDescription:(NSString *)description;
+{
+    return [NSException failureInFile:file atLine:0 withDescription:@"%@", description];
+}
+
 - (void)rethrowFailFastExceptions;
 {
     if([failFastExceptions count] > 0)
@@ -256,10 +251,14 @@ NSException *e = exceptionToFailWith(format, ##args); \
 
 - (void)failWithException:(NSException *)exception;
 {
-    if (currentTestCase) {
-        [currentTestCase failWithException:exception];
+    if ([self failureReporter]) {
+        [[self failureReporter] failWithException:exception];
     }else{
-        [exception raise];
+        if (currentTestCase) {
+            [currentTestCase failWithException:exception];
+        }else{
+            [exception raise];
+        }
     }
 }
 
@@ -286,6 +285,19 @@ static NSString *file = nil;
     }else{
         file = nil;
     }
+    
+//    if (currentTestCase ) {
+    //    if ([testCaseFailer isNotSenTestCaseFailer]) {
+    //      testCaseFailer = [[OCMockSenTestCaseFailer alloc] init];
+    //    }
+    
+//       [testCaseFailer setCurrentTestCase:currentTestCase file:file];
+//
+//    }else{
+//    if ([testCaseFailer isNotExceptionFailer]) {
+//      testCaseFailer = exceptionFailer;
+//}
+//
 }
 
 - (id)getNewRecorder

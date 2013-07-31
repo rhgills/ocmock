@@ -12,6 +12,7 @@
 }
 
 - (id)initWithClass:(Class)aClass;
+- (id)initWithClass:(Class)aClass isNice:(BOOL)isNice;
 
 - (Class)mockedClass;
 

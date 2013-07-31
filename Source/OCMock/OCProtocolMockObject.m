@@ -11,11 +11,20 @@
 
 #pragma mark  Initialisers, description, accessors, etc.
 
-- (id)initWithProtocol:(Protocol *)aProtocol
+- (id)initWithProtocol:(Protocol *)aProtocol;
 {
-	[super init];
-	mockedProtocol = aProtocol;
-	return self;
+    return [self initWithProtocol:aProtocol isNice:NO];
+}
+
+- (id)initWithProtocol:(Protocol *)aProtocol isNice:(BOOL)shouldBeNice;
+{
+    self = [super init];
+    if (!self) return nil;
+    
+    mockedProtocol = aProtocol;
+    isNice = shouldBeNice;
+    
+    return self;
 }
 
 - (NSString *)description
