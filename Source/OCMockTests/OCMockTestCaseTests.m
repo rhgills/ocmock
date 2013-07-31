@@ -6,15 +6,22 @@
 //  Copyright (c) 2013 Mulle Kybernetik. All rights reserved.
 //
 
-#import "OCMockTestCaseTests.h"
+#import "OCMockTestCase.h"
+
+@interface OCMockTestCaseTests : OCMockTestCase
+
+@end
+
+
 
 @implementation OCMockTestCaseTests
 
-//- (void)testReportsFailure;
-//{
-//    id mock = [self mockForClass:[NSString class] file:[self file]];
-//    [mock lowercaseString];
-//}
+// should fail with: 'unexpected method invoked: lowercaseString'
+- (void)testReportsFailure;
+{
+    id mock = [self mockForClass:[NSString class]];
+    [mock lowercaseString];
+}
 
 - (NSString *)file
 {

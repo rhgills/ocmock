@@ -23,10 +23,10 @@
 - (void)tearDown NS_REQUIRES_SUPER;
 
 
-- (id)mockForClass:(Class)aClass file:(NSString *)aFile;
-- (id)mockForProtocol:(Protocol *)aProtocol file:(NSString *)aFile;
-- (id)niceMockForClass:(Class)aClass file:(NSString *)aFile;
-- (id)niceMockForProtocol:(Protocol *)aProtocol file:(NSString *)aFile;
+- (id)mockForClass:(Class)aClass;
+- (id)mockForProtocol:(Protocol *)aProtocol;
+- (id)niceMockForClass:(Class)aClass;
+- (id)niceMockForProtocol:(Protocol *)aProtocol;
 
 
 - (id)partialMockForObject:(NSObject *)anObject;

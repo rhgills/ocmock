@@ -32,16 +32,16 @@
     [super tearDown];
 }
 
-//- (void)testAllFailuresReported
-//{
-//    mock = [OCMockObject mockForClass:[NSString class] testCase:self file:[NSString stringWithUTF8String:__FILE__]];
-//    [[mock expect] uppercaseString];
-//  
-//    [mock lowercaseString]; // this should be reported as a failure
-//    [mock stringByAppendingString:@""]; // this should too
-//    
-//    anotherMock = [OCMockObject mockForClass:[NSObject class] testCase:self file:[NSString stringWithUTF8String:__FILE__]];
-//    [anotherMock valueForKey:@"a key"];
-//}
+- (void)testAllFailuresReported
+{
+    mock = [OCMockObject mockForClass:[NSString class] testCase:self file:[NSString stringWithUTF8String:__FILE__]];
+    [[mock expect] uppercaseString];
+  
+    [mock lowercaseString]; // this should be reported as a failure
+    [mock stringByAppendingString:@""]; // this should too
+    
+    anotherMock = [OCMockObject mockForClass:[NSObject class] testCase:self file:[NSString stringWithUTF8String:__FILE__]];
+    [anotherMock valueForKey:@"a key"];
+}
 
 @end

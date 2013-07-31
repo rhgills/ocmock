@@ -40,9 +40,9 @@
     self.mocksToVerify = nil;
 }
 
-- (id)mockForClass:(Class)aClass file:(NSString *)aFile
+- (id)mockForClass:(Class)aClass
 {
-    return [self autoVerifyMock:[OCMockObject mockForClass:aClass testCase:self file:aFile]];
+    return [self autoVerifyMock:[OCMockObject mockForClass:aClass testCase:self file:[self file]]];
 }
 
 - (id)partialMockForObject:(id)object
@@ -50,19 +50,19 @@
     return [self autoVerifyMock:[OCMockObject partialMockForObject:object]];
 }
 
-- (id)mockForProtocol:(Protocol *)protocol file:(NSString *)aFile
+- (id)mockForProtocol:(Protocol *)protocol
 {
-    return [self autoVerifyMock:[OCMockObject mockForProtocol:protocol testCase:self file:aFile]];
+    return [self autoVerifyMock:[OCMockObject mockForProtocol:protocol testCase:self file:[self file]]];
 }
 
-- (id)niceMockForClass:(Class)aClass file:(NSString *)aFile
+- (id)niceMockForClass:(Class)aClass
 {
-    return [self autoVerifyMock:[OCMockObject niceMockForClass:aClass testCase:self file:aFile]];
+    return [self autoVerifyMock:[OCMockObject niceMockForClass:aClass testCase:self file:[self file]]];
 }
 
-- (id)niceMockForProtocol:(Protocol *)protocol file:(NSString *)aFile
+- (id)niceMockForProtocol:(Protocol *)protocol
 {
-    return [self autoVerifyMock:[OCMockObject niceMockForProtocol:protocol testCase:self file:aFile]];
+    return [self autoVerifyMock:[OCMockObject niceMockForProtocol:protocol testCase:self file:[self file]]];
 }
 
 - (id)observerMock
@@ -82,6 +82,18 @@
         self.mocksToVerify = [NSMutableArray array];
     }
     [self.mocksToVerify addObject:mock];
+}
+
+- (NSString *)file
+{
+    // abstract. implement in a concrete test subclass.
+    return [self defaultFileName];
+}
+
+- (NSString *)defaultFileName;
+{
+    // Grouping by the test case name, even if it doesn't link to the correct file, is better than nothing.
+    return [NSString stringWithFormat:@"%@", [self class]];
 }
 
 @end
