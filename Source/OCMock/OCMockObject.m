@@ -139,14 +139,13 @@
 	{
 		[self failWithFormat:@"%@: expected method was not invoked: %@",
          [self description], [[expectations objectAtIndex:0] description]];
-	}
-	if([expectations count] > 0)
+	}else if([expectations count] > 0)
 	{
         [self failWithFormat:@"%@ : %@ expected methods were not invoked: %@",
          [self description], @([expectations count]), [self _recorderDescriptions:YES]];
-	}
-    
-    [self rethrowFailFastExceptions];
+	}else{
+        [self rethrowFailFastExceptions];
+    }
 }
 
 - (void)rethrowFailFastExceptions;
@@ -161,7 +160,6 @@
 {
     // no-op for mock objects that are not class object or partial mocks
 }
-
 
 #pragma mark  Handling invocations
 
@@ -255,13 +253,17 @@
 
 - (void)failWithException:(NSException *)exception;
 {
-    [exception raise];
+    if (currentTestCase) {
+        [currentTestCase failWithException:exception];
+    }else{
+        [exception raise];
+    }
 }
 
 - (void)failFastWithException:(NSException *)exception;
 {
     [failFastExceptions addObject:exception];
-    [exception raise];
+    [self failWithException:exception];
 }
 
 #pragma mark  Helper methods
