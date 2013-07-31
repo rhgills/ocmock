@@ -14,9 +14,39 @@
 @interface OCMockObject(Private)
 + (id)_makeNice:(OCMockObject *)mock;
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
+- (void)failWithException:(NSException *)exception;
+- (void)failFastWithException:(NSException *)exception;
 @end
 
 #pragma mark  -
+@interface NSException(Private)
+
++ (NSException *)failureInFile:(NSString *)fileName
+                         atLine:(int)line 
+                    withDescription:(NSString *)description, ... NS_FORMAT_FUNCTION(3, 4);
+
+@end
+
+
+#define exceptionToFailWith(format, args...) \
+{ \
+[NSException failureInFile:file atLine:0 withDescription:format, ##args] \
+}
+
+#define failFastWithFormat(format, args...) \
+{ \
+NSException *e = exceptionToFailWith(format, ##args); \
+[self failFastWithException:e]; \
+}
+
+#define failWithFormat(format, args...) \
+{ \
+NSException *e = exceptionToFailWith(format, ##args); \
+[self failWithException:e]; \
+}
+
+
+
 
 
 @implementation OCMockObject
@@ -135,14 +165,14 @@
 
 - (void)verify
 {
-	if([expectations count] == 1)
+    if([expectations count] == 1)
 	{
-		[self failWithFormat:@"%@: expected method was not invoked: %@",
-         [self description], [[expectations objectAtIndex:0] description]];
+        failFastWithFormat(@"%@: expected method was not invoked: %@",
+                           [self description], [[expectations objectAtIndex:0] description]);
 	}else if([expectations count] > 0)
 	{
-        [self failWithFormat:@"%@ : %@ expected methods were not invoked: %@",
-         [self description], @([expectations count]), [self _recorderDescriptions:YES]];
+        failFastWithFormat(@"%@ : %@ expected methods were not invoked: %@",
+                           [self description], @([expectations count]), [self _recorderDescriptions:YES]);
 	}else{
         [self rethrowFailFastExceptions];
     }
@@ -195,16 +225,16 @@
 	
 	if([rejections containsObject:recorder]) 
 	{
-        [self failFastWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description],
-         [anInvocation invocationDescription]];
+        failFastWithFormat(@"%@: explicitly disallowed method invoked: %@", [self description],
+                           [anInvocation invocationDescription]);
 	}
 
 	if([expectations containsObject:recorder])
 	{
 		if(expectationOrderMatters && ([expectations objectAtIndex:0] != recorder))
 		{
-            [self failWithFormat:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
-			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
+            failFastWithFormat(@"%@: unexpected method invoked: %@\n\texpected:\t%@",
+                               [self description], [recorder description], [[expectations objectAtIndex:0] description]);
 		}
 		[[recorder retain] autorelease];
 		[expectations removeObject:recorder];
@@ -219,36 +249,9 @@
 {
 	if(isNice == NO)
 	{
-        [self failFastWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description],
-         [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
+        failFastWithFormat(@"%@: unexpected method invoked: %@ %@",  [self description],
+                           [anInvocation invocationDescription], [self _recorderDescriptions:NO]);
 	}
-}
-
-- (void)failFastWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-{
-    va_list args;
-    va_start(args, format);
-    NSException *e = [self exceptionWithFormat:format arguments:args];
-    va_end(args);
-    
-    [self failFastWithException:e];
-}
-
-- (void)failWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-{
-    va_list args;
-    va_start(args, format);
-    NSException *e = [self exceptionWithFormat:format arguments:args];
-    va_end(args);
-    
-    [self failWithException:e];
-}
-
-- (NSException *)exceptionWithFormat:format arguments:(va_list)args
-{
-    NSString *reason = [[NSString alloc] initWithFormat:format arguments:args];
-    return [NSException exceptionWithName:NSInternalInconsistencyException reason:
-                              reason userInfo:nil];
 }
 
 - (void)failWithException:(NSException *)exception;
@@ -268,9 +271,21 @@
 
 #pragma mark  Helper methods
 static id currentTestCase = nil;
+static NSString *file = nil;
 + (void)setCurrentTestCase:(id)theTestCase
 {
+    [self setCurrentTestCase:theTestCase file:NULL];
+}
+
++ (void)setCurrentTestCase:(id)theTestCase file:(const char *)theCfile
+{
     currentTestCase = theTestCase;
+    
+    if (theCfile) {
+        file = [NSString stringWithUTF8String:theCfile];
+    }else{
+        file = nil;
+    }
 }
 
 - (id)getNewRecorder

@@ -38,6 +38,7 @@
 
 // internal use only
 + (void)setCurrentTestCase:(id)theTestCase;
++ (void)setCurrentTestCase:(id)theTestCase file:(const char*)file;
 - (id)getNewRecorder;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;
