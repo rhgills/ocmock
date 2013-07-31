@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.description = 'This implementation fully utilises the dynamic nature of Objective-C. It creates mock objects on the fly and uses the trampoline pattern so that you can define expectations and stubs using the same syntax that you use to call methods. No strings, no @selector, just method invocations.'
 
   s.source_files = 'Source/OCMock/**/*.[mh]'
+  s.frameworks = 'SenTestingKit'
   s.license = { :type => 'Custom', :text => 'Copyright (c) 2004-2013 by Mulle Kybernetik. All rights reserved.
 
   Permission to use, copy, modify and distribute this software and its documentation
