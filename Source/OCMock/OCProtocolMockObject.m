@@ -18,7 +18,12 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol isNice:(BOOL)shouldBeNice;
 {
-    self = [super init];
+    return [self initWithProtocol:aProtocol isNice:shouldBeNice testCase:nil];
+}
+
+- (id)initWithProtocol:(Protocol *)aProtocol isNice:(BOOL)shouldBeNice testCase:(id)aTestCase;
+{
+    self = [super initWithTestCase:aTestCase];
     if (!self) return nil;
     
     mockedProtocol = aProtocol;

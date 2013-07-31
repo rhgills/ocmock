@@ -10,6 +10,8 @@
 #import "OCObserverMockObject.h"
 #import <OCMock/OCMockRecorder.h>
 #import "NSInvocation+OCMAdditions.h"
+#import "OCMockSenTestCaseFailureReporter.h"
+#import "OCMockExceptionFailureReporter.h"
 
 @interface OCMockObject(Private)
 - (NSString *)_recorderDescriptions:(BOOL)onlyExpectations;
@@ -52,12 +54,26 @@
 
 + (id)mockForClass:(Class)aClass
 {
-	return [[[OCClassMockObject alloc] initWithClass:aClass] autorelease];
+	return [self mockForClass:aClass testCase:nil file:nil];
+}
+
++ (id)mockForClass:(Class)aClass testCase:(id)testCase file:(NSString *)aFile;
+{
+    OCClassMockObject *m = [[[OCClassMockObject alloc] initWithClass:aClass isNice:NO testCase:testCase] autorelease];
+    [m setFile:aFile];
+    return m;
 }
 
 + (id)mockForProtocol:(Protocol *)aProtocol
 {
-	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol] autorelease];
+	return [self mockForProtocol:aProtocol testCase:nil file:nil];
+}
+
++ (id)mockForProtocol:(Protocol *)aProtocol testCase:(id)testCase file:(NSString *)aFile;
+{
+    OCProtocolMockObject *m = [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol isNice:NO testCase:testCase] autorelease];
+    [m setFile:aFile];
+    return m;
 }
 
 + (id)partialMockForObject:(NSObject *)anObject
@@ -65,15 +81,33 @@
 	return [[[OCPartialMockObject alloc] initWithObject:anObject] autorelease];
 }
 
+//+ (id)partialMockForObject:(NSObject *)anObject testCase:(id)testCase;
+//{
+//    return [[[OCPartialMockObject alloc] initWithObject:anObject testCase:testCase] autorelease]; // NYI constructor
+//}
 
 + (id)niceMockForClass:(Class)aClass
 {
-	return [[[OCClassMockObject alloc] initWithClass:aClass isNice:YES] autorelease];
+	return [self niceMockForClass:aClass testCase:nil file:nil];
+}
+
++ (id)niceMockForClass:(Class)aClass testCase:(id)testCase file:(NSString *)aFile;
+{
+    OCMockObject *m = [[[OCClassMockObject alloc] initWithClass:aClass isNice:YES testCase:testCase] autorelease];
+    [m setFile:aFile];
+    return m;
 }
 
 + (id)niceMockForProtocol:(Protocol *)aProtocol
 {
-	return [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol isNice:YES] autorelease];
+    return [self niceMockForProtocol:aProtocol testCase:nil file:nil];
+}
+
++ (id)niceMockForProtocol:(Protocol *)aProtocol testCase:(id)testCase file:(NSString *)aFile;
+{
+	OCMockObject *m = [[[OCProtocolMockObject alloc] initWithProtocol:aProtocol isNice:YES testCase:testCase] autorelease];
+    [m setFile:aFile];
+    return m;
 }
 
 + (id)observerMock
@@ -87,12 +121,23 @@
 
 - (id)init
 {
-	// no [super init], we're inheriting from NSProxy
+    return [self initWithTestCase:nil];
+}
+
+- (id)initWithTestCase:(id)aTestCase;
+{
+    // no [super init], we're inheriting from NSProxy
 	expectationOrderMatters = NO;
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
 	rejections = [[NSMutableArray alloc] init];
 	failFastExceptions = [[NSMutableArray alloc] init];
+    testCase = [aTestCase retain];
+    if (testCase) {
+        [self setFailureReporter:[[OCMockSenTestCaseFailureReporter alloc] initWithTestCase:testCase]];
+    }else{
+        [self setFailureReporter:[[OCMockExceptionFailureReporter alloc] init]];
+    }
 	return self;
 }
 
@@ -102,6 +147,8 @@
 	[expectations release];
 	[rejections	release];
 	[failFastExceptions release];
+    [testCase release];
+    [self setFailureReporter:nil];
 	[super dealloc];
 }
 
@@ -170,7 +217,7 @@
 
 - (NSException *)exceptionWithDescription:(NSString *)description;
 {
-    return [NSException failureInFile:file atLine:0 withDescription:@"%@", description];
+    return [NSException failureInFile:[self file] atLine:0 withDescription:@"%@", description];
 }
 
 - (void)rethrowFailFastExceptions;
@@ -251,15 +298,7 @@
 
 - (void)failWithException:(NSException *)exception;
 {
-    if ([self failureReporter]) {
-        [[self failureReporter] failWithException:exception];
-    }else{
-        if (currentTestCase) {
-            [currentTestCase failWithException:exception];
-        }else{
-            [exception raise];
-        }
-    }
+    [[self failureReporter] failWithException:exception];
 }
 
 - (void)failFastWithException:(NSException *)exception;
@@ -269,37 +308,6 @@
 }
 
 #pragma mark  Helper methods
-static id currentTestCase = nil;
-static NSString *file = nil;
-+ (void)setCurrentTestCase:(id)theTestCase
-{
-    [self setCurrentTestCase:theTestCase file:NULL];
-}
-
-+ (void)setCurrentTestCase:(id)theTestCase file:(const char *)theCfile
-{
-    currentTestCase = theTestCase;
-    
-    if (theCfile) {
-        file = [NSString stringWithUTF8String:theCfile];
-    }else{
-        file = nil;
-    }
-    
-//    if (currentTestCase ) {
-    //    if ([testCaseFailer isNotSenTestCaseFailer]) {
-    //      testCaseFailer = [[OCMockSenTestCaseFailer alloc] init];
-    //    }
-    
-//       [testCaseFailer setCurrentTestCase:currentTestCase file:file];
-//
-//    }else{
-//    if ([testCaseFailer isNotExceptionFailer]) {
-//      testCaseFailer = exceptionFailer;
-//}
-//
-}
-
 - (id)getNewRecorder
 {
 	return [[[OCMockRecorder alloc] initWithSignatureResolver:self] autorelease];

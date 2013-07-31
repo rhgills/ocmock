@@ -13,6 +13,7 @@
 
 - (id)initWithClass:(Class)aClass;
 - (id)initWithClass:(Class)aClass isNice:(BOOL)isNice;
+- (id)initWithClass:(Class)aClass isNice:(BOOL)isNice testCase:(id)aTestCase;
 
 - (Class)mockedClass;
 

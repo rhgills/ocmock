@@ -12,6 +12,7 @@
 
 - (id)initWithProtocol:(Protocol *)aProtocol;
 - (id)initWithProtocol:(Protocol *)aProtocol isNice:(BOOL)shouldBeNice;
+- (id)initWithProtocol:(Protocol *)aProtocol isNice:(BOOL)shouldBeNice testCase:(id)aTestCase;
 
 @end
 

@@ -1,13 +1,13 @@
 //
-//  OCMockRaiseExceptionFailer.m
+//  OCMockTestCaseTests.h
 //  OCMock
 //
 //  Created by Robert Gilliam on 7/31/13.
 //  Copyright (c) 2013 Mulle Kybernetik. All rights reserved.
 //
 
-#import "OCMockRaiseExceptionFailer.h"
+#import "OCMockTestCase.h"
 
-@implementation OCMockRaiseExceptionFailer
+@interface OCMockTestCaseTests : OCMockTestCase
 
 @end

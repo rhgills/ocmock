@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "OCMockTestCaseFailer.h"
+#import "OCMockFailureReporter.h"
 
-@interface OCMockRaiseExceptionFailer : NSObject <OCMockTestCaseFailer>
+@interface OCMockExceptionFailureReporter : NSObject <OCMockFailureReporter>
+
+
 
 @end

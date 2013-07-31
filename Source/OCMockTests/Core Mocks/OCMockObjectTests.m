@@ -14,6 +14,9 @@
 #import "TestClassWithIntPointerMethod.h"
 #import "NotificationRecorderForTesting.h"
 
+#import "OCMockExceptionFailureReporter.h"
+#import "OCMockSenTestCaseFailureReporter.h"
+
 // --------------------------------------------------------------------------------------
 //  setup
 // --------------------------------------------------------------------------------------
@@ -56,6 +59,20 @@
     [objectMock setFailureReporter:fakeFailureReporter];
 }
 
+- (void)testUsesExceptionFailureReporterByDefault
+{
+    objectMock = [[OCClassMockObject alloc] initWithClass:[NSObject class]];
+    STAssertTrue([[objectMock failureReporter] isKindOfClass:[OCMockExceptionFailureReporter class]], nil);
+}
+
+- (void)testUsesSenTestFailureReporterWhenATestCaseAssociated
+{
+    id testCase = [[SenTestCase alloc] init];
+    STAssertNotNil(testCase, nil);
+ 
+    objectMock = [[OCClassMockObject alloc] initWithClass:[NSObject class] isNice:NO testCase:testCase];
+    STAssertTrue([[objectMock failureReporter] isKindOfClass:[OCMockSenTestCaseFailureReporter class]], nil);
+}
 
 // --------------------------------------------------------------------------------------
 //	accepting stubbed methods / rejecting methods not stubbed

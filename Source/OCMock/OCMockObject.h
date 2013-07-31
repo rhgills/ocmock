@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------------------
 
 #import <Foundation/Foundation.h>
-#import "OCMockTestCaseFailer.h"
+#import "OCMockFailureReporter.h"
 
 @interface OCMockObject : NSProxy
 {
@@ -14,8 +14,10 @@
 	NSMutableArray	*expectations;
 	NSMutableArray	*rejections;
 	NSMutableArray	*failFastExceptions;
+    id testCase;
 }
 
+// factory
 + (id)mockForClass:(Class)aClass;
 + (id)mockForProtocol:(Protocol *)aProtocol;
 + (id)partialMockForObject:(NSObject *)anObject;
@@ -25,7 +27,15 @@
 
 + (id)observerMock;
 
+
++ (id)mockForClass:(Class)aClass testCase:(id)testCase file:(NSString *)aFile;
++ (id)mockForProtocol:(Protocol *)aProtocol testCase:(id)testCase file:(NSString *)aFile;
++ (id)niceMockForClass:(Class)aClass testCase:(id)testCase file:(NSString *)aFile;
++ (id)niceMockForProtocol:(Protocol *)aProtocol testCase:(id)testCase file:(NSString *)aFile;
+
+// instance
 - (id)init;
+- (id)initWithTestCase:(id)testCase;
 
 - (void)setExpectationOrderMatters:(BOOL)flag;
 
@@ -37,11 +47,10 @@
 
 - (void)stopMocking;
 
-@property (retain) id <OCMockTestCaseFailer> failureReporter;
+@property (retain) id <OCMockFailureReporter> failureReporter; // readwrite only for tests.
 
 // internal use only
-+ (void)setCurrentTestCase:(id)theTestCase;
-+ (void)setCurrentTestCase:(id)theTestCase file:(const char*)file;
+@property (retain) NSString *file;
 - (id)getNewRecorder;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

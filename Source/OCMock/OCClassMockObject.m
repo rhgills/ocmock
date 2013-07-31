@@ -6,7 +6,6 @@
 #import <objc/runtime.h>
 #import "OCClassMockObject.h"
 
-
 @implementation OCClassMockObject
 
 #pragma mark  Mock table
@@ -60,12 +59,17 @@ static NSMutableDictionary *mockTable;
 
 - (id)initWithClass:(Class)aClass isNice:(BOOL)shouldBeNice;
 {
-    self = [super init];
+    return [self initWithClass:aClass isNice:shouldBeNice testCase:nil];
+}
+
+- (id)initWithClass:(Class)aClass isNice:(BOOL)shouldBeNice testCase:(id)aTestCase;
+{
+    self = [super initWithTestCase:aTestCase];
     if (!self) return nil;
     
     mockedClass = aClass;
     isNice = shouldBeNice;
-    
+        
     return self;
 }
 
