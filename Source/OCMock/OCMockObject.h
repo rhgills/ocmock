@@ -12,7 +12,7 @@
 	NSMutableArray	*recorders;
 	NSMutableArray	*expectations;
 	NSMutableArray	*rejections;
-	NSMutableArray	*exceptions;
+	NSMutableArray	*failFastExceptions;
 }
 
 + (id)mockForClass:(Class)aClass;
@@ -37,7 +37,7 @@
 - (void)stopMocking;
 
 // internal use only
-
++ (void)setCurrentTestCase:(id)theTestCase;
 - (id)getNewRecorder;
 - (BOOL)handleInvocation:(NSInvocation *)anInvocation;
 - (void)handleUnRecordedInvocation:(NSInvocation *)anInvocation;

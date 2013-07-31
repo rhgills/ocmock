@@ -82,7 +82,7 @@
 	recorders = [[NSMutableArray alloc] init];
 	expectations = [[NSMutableArray alloc] init];
 	rejections = [[NSMutableArray alloc] init];
-	exceptions = [[NSMutableArray alloc] init];
+	failFastExceptions = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -91,7 +91,7 @@
 	[recorders release];
 	[expectations release];
 	[rejections	release];
-	[exceptions release];
+	[failFastExceptions release];
 	[super dealloc];
 }
 
@@ -137,17 +137,23 @@
 {
 	if([expectations count] == 1)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@: expected method was not invoked: %@", 
-			[self description], [[expectations objectAtIndex:0] description]];
+		[self failWithFormat:@"%@: expected method was not invoked: %@",
+         [self description], [[expectations objectAtIndex:0] description]];
 	}
 	if([expectations count] > 0)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %@ expected methods were not invoked: %@", 
-			[self description], @([expectations count]), [self _recorderDescriptions:YES]];
+        [self failWithFormat:@"%@ : %@ expected methods were not invoked: %@",
+         [self description], @([expectations count]), [self _recorderDescriptions:YES]];
 	}
-	if([exceptions count] > 0)
+    
+    [self rethrowFailFastExceptions];
+}
+
+- (void)rethrowFailFastExceptions;
+{
+    if([failFastExceptions count] > 0)
 	{
-		[[exceptions objectAtIndex:0] raise];
+		[self failWithException:failFastExceptions[0]];
 	}
 }
 
@@ -191,20 +197,16 @@
 	
 	if([rejections containsObject:recorder]) 
 	{
-		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-								  [NSString stringWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description], 
-								   [anInvocation invocationDescription]] userInfo:nil];
-		[exceptions addObject:exception];
-		[exception raise];
+        [self failFastWithFormat:@"%@: explicitly disallowed method invoked: %@", [self description],
+         [anInvocation invocationDescription]];
 	}
 
 	if([expectations containsObject:recorder])
 	{
 		if(expectationOrderMatters && ([expectations objectAtIndex:0] != recorder))
 		{
-			[NSException raise:NSInternalInconsistencyException	format:@"%@: unexpected method invoked: %@\n\texpected:\t%@",  
+            [self failWithFormat:@"%@: unexpected method invoked: %@\n\texpected:\t%@",
 			 [self description], [recorder description], [[expectations objectAtIndex:0] description]];
-			
 		}
 		[[recorder retain] autorelease];
 		[expectations removeObject:recorder];
@@ -219,16 +221,55 @@
 {
 	if(isNice == NO)
 	{
-		NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:
-								  [NSString stringWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description], 
-								   [anInvocation invocationDescription], [self _recorderDescriptions:NO]] userInfo:nil];
-		[exceptions addObject:exception];
-		[exception raise];
+        [self failFastWithFormat:@"%@: unexpected method invoked: %@ %@",  [self description],
+         [anInvocation invocationDescription], [self _recorderDescriptions:NO]];
 	}
 }
 
+- (void)failFastWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
+{
+    va_list args;
+    va_start(args, format);
+    NSException *e = [self exceptionWithFormat:format arguments:args];
+    va_end(args);
+    
+    [self failFastWithException:e];
+}
+
+- (void)failWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
+{
+    va_list args;
+    va_start(args, format);
+    NSException *e = [self exceptionWithFormat:format arguments:args];
+    va_end(args);
+    
+    [self failWithException:e];
+}
+
+- (NSException *)exceptionWithFormat:format arguments:(va_list)args
+{
+    NSString *reason = [[NSString alloc] initWithFormat:format arguments:args];
+    return [NSException exceptionWithName:NSInternalInconsistencyException reason:
+                              reason userInfo:nil];
+}
+
+- (void)failWithException:(NSException *)exception;
+{
+    [exception raise];
+}
+
+- (void)failFastWithException:(NSException *)exception;
+{
+    [failFastExceptions addObject:exception];
+    [exception raise];
+}
 
 #pragma mark  Helper methods
+static id currentTestCase = nil;
++ (void)setCurrentTestCase:(id)theTestCase
+{
+    currentTestCase = theTestCase;
+}
 
 - (id)getNewRecorder
 {
