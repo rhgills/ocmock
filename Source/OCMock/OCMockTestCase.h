@@ -8,7 +8,8 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-// This little block can probably go away with the next version of developer tools:
+// This little block can probably go away with the next version of developer tools.
+// Shamelessly borrowed from Florian Kugler ( https://github.com/dkduck ) as seen in objc.io ( http://objc.io ) issue #1.
 #ifndef NS_REQUIRES_SUPER
 # if __has_attribute(objc_requires_super)
 #  define NS_REQUIRES_SUPER __attribute((objc_requires_super))
