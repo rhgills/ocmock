@@ -128,14 +128,14 @@
 		4B1699CD17A98A54002160CA /* OCMockSenTestCaseFailureReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699C517A98A54002160CA /* OCMockSenTestCaseFailureReporter.h */; };
 		4B1699CE17A98A54002160CA /* OCMockSenTestCaseFailureReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699C617A98A54002160CA /* OCMockSenTestCaseFailureReporter.m */; };
 		4B1699CF17A98A54002160CA /* OCMockSenTestCaseFailureReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699C617A98A54002160CA /* OCMockSenTestCaseFailureReporter.m */; };
-		4B1699D017A98A54002160CA /* OCMockFailureReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699C717A98A54002160CA /* OCMockFailureReporter.h */; };
-		4B1699D117A98A54002160CA /* OCMockFailureReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699C717A98A54002160CA /* OCMockFailureReporter.h */; };
+		4B1699D017A98A54002160CA /* OCMockFailureReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699C717A98A54002160CA /* OCMockFailureReporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4B1699D117A98A54002160CA /* OCMockFailureReporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699C717A98A54002160CA /* OCMockFailureReporter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B1699D517A98AC2002160CA /* OCMockExceptionFailureReporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699D417A98AC2002160CA /* OCMockExceptionFailureReporterTests.m */; };
 		4B1699D817A98CF3002160CA /* OCMockSenTestCaseFailureReporterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699D717A98CF3002160CA /* OCMockSenTestCaseFailureReporterTests.m */; };
 		4B1699DB17A98DBF002160CA /* OCMockObjectIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699DA17A98DBF002160CA /* OCMockObjectIntegrationTests.m */; };
 		4B1699DE17A98DE8002160CA /* FakeSenTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699DD17A98DE8002160CA /* FakeSenTestCase.m */; };
-		4B1699E117A98F7A002160CA /* OCMockTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699DF17A98F7A002160CA /* OCMockTestCase.h */; };
-		4B1699E217A98F7A002160CA /* OCMockTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699DF17A98F7A002160CA /* OCMockTestCase.h */; };
+		4B1699E117A98F7A002160CA /* OCMockTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699DF17A98F7A002160CA /* OCMockTestCase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4B1699E217A98F7A002160CA /* OCMockTestCase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B1699DF17A98F7A002160CA /* OCMockTestCase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4B1699E317A98F7A002160CA /* OCMockTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699E017A98F7A002160CA /* OCMockTestCase.m */; };
 		4B1699E417A98F7A002160CA /* OCMockTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1699E017A98F7A002160CA /* OCMockTestCase.m */; };
 		4B1699E517A990AF002160CA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030EF0C114632FD000B04273 /* SenTestingKit.framework */; };
@@ -622,6 +622,8 @@
 				03B315C3146333BF0052CD09 /* OCMArg.h in Headers */,
 				03B315D2146333BF0052CD09 /* OCMConstraint.h in Headers */,
 				03B315B9146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h in Headers */,
+				4B1699E117A98F7A002160CA /* OCMockTestCase.h in Headers */,
+				4B1699D017A98A54002160CA /* OCMockFailureReporter.h in Headers */,
 				03B315AF146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */,
 				03B315B4146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h in Headers */,
 				03B315BE146333BF0052CD09 /* OCClassMockObject.h in Headers */,
@@ -640,8 +642,6 @@
 				03B31613146333C00052CD09 /* OCProtocolMockObject.h in Headers */,
 				4B1699C817A98A54002160CA /* OCMockExceptionFailureReporter.h in Headers */,
 				4B1699CC17A98A54002160CA /* OCMockSenTestCaseFailureReporter.h in Headers */,
-				4B1699D017A98A54002160CA /* OCMockFailureReporter.h in Headers */,
-				4B1699E117A98F7A002160CA /* OCMockTestCase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +655,8 @@
 				03B315C4146333BF0052CD09 /* OCMArg.h in Headers */,
 				03B315D3146333BF0052CD09 /* OCMConstraint.h in Headers */,
 				03B315BA146333BF0052CD09 /* NSNotificationCenter+OCMAdditions.h in Headers */,
+				4B1699E217A98F7A002160CA /* OCMockTestCase.h in Headers */,
+				4B1699D117A98A54002160CA /* OCMockFailureReporter.h in Headers */,
 				03B315B0146333BF0052CD09 /* NSInvocation+OCMAdditions.h in Headers */,
 				03B315B5146333BF0052CD09 /* NSMethodSignature+OCMAdditions.h in Headers */,
 				03B315BF146333BF0052CD09 /* OCClassMockObject.h in Headers */,
@@ -677,8 +679,6 @@
 				03B316441463350E0052CD09 /* OCObserverMockObjectTests.h in Headers */,
 				4B1699C917A98A54002160CA /* OCMockExceptionFailureReporter.h in Headers */,
 				4B1699CD17A98A54002160CA /* OCMockSenTestCaseFailureReporter.h in Headers */,
-				4B1699D117A98A54002160CA /* OCMockFailureReporter.h in Headers */,
-				4B1699E217A98F7A002160CA /* OCMockTestCase.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1172,7 +1172,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
-				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1197,7 +1197,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = OCMock;
-				PUBLIC_HEADERS_FOLDER_PATH = "$(PRODUCT_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "include/$(PRODUCT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

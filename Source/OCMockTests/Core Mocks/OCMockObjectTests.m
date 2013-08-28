@@ -704,6 +704,20 @@ static NSString *TestNotification = @"TestNotification";
     STAssertTrue([stringMock isKindOfClass:[NSString class]], @"Should have pretended to be the mocked class.");
 }
 
+- (void)testDoesNotConformToHCMatcher
+{
+    STAssertFalse([stringMock conformsToProtocol:NSProtocolFromString(@"HCMatcher")], nil);
+
+    [self shouldNotHaveReportedAFailure];
+}
+
+- (void)testNSStringConformsToNSObject
+{
+    STAssertTrue([stringMock conformsToProtocol:@protocol(NSObject)], nil);
+
+    [self shouldNotHaveReportedAFailure];
+}
+
 - (void)testWorksWithTypeQualifiers
 {
     id myMock = [OCMockObject mockForClass:[TestClassWithTypeQualifierMethod class]];
@@ -731,16 +745,16 @@ static NSString *TestNotification = @"TestNotification";
 //  some internal tests
 // --------------------------------------------------------------------------------------
 
-- (void)testReRaisesFailFastExceptionsOnVerify
+- (void)testDoesNotReRaiseAFailFastExceptionOnVerify
 {
     [stringMock lowercaseString];
     [fakeFailureReporter clearReportedFailures];
 
 	[stringMock verify];
-    [self shouldHaveReportedAFailure];
+    [self shouldNotHaveReportedAFailure];
 }
 
-- (void)testReRaisesRejectExceptionsOnVerify
+- (void)testDoesNotReRaisesARejectExceptionOnVerify
 {
 	[[niceMock reject] uppercaseString];
 
@@ -748,7 +762,7 @@ static NSString *TestNotification = @"TestNotification";
     [fakeFailureReporter clearReportedFailures];
 
     [niceMock verify];
-    [self shouldHaveReportedAFailure];
+    [self shouldNotHaveReportedAFailure];
 }
 
 

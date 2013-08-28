@@ -200,9 +200,7 @@
 	{
         failFastWithFormat(@"%@ : %@ expected methods were not invoked: %@",
                            [self description], @([expectations count]), [self _recorderDescriptions:YES]);
-	}else{
-        [self rethrowFailFastExceptions];
-    }
+	}
 }
 
 - (void)failFastWithDescription:(NSString *)description;
@@ -218,14 +216,6 @@
 - (NSException *)exceptionWithDescription:(NSString *)description;
 {
     return [NSException failureInFile:[self file] atLine:0 withDescription:@"%@", description];
-}
-
-- (void)rethrowFailFastExceptions;
-{
-    if([failFastExceptions count] > 0)
-	{
-		[self failWithException:failFastExceptions[0]];
-	}
 }
 
 - (void)stopMocking

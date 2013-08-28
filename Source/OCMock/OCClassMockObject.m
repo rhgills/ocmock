@@ -182,4 +182,9 @@ static NSMutableDictionary *mockTable;
     return [mockedClass isSubclassOfClass:aClass];
 }
 
+- (BOOL)conformsToProtocol:(Protocol *)aProtocol
+{
+    return [mockedClass conformsToProtocol:aProtocol];
+}
+
 @end
