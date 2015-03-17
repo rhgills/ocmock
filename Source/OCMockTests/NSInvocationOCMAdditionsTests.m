@@ -1,116 +1,140 @@
-//---------------------------------------------------------------------------------------
-//  $Id$
-//  Copyright (c) 2006-2008 by Mulle Kybernetik. See License file for details.
-//---------------------------------------------------------------------------------------
+/*
+ *  Copyright (c) 2006-2015 Erik Doernenburg and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may
+ *  not use these files except in compliance with the License. You may obtain
+ *  a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ *  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ *  License for the specific language governing permissions and limitations
+ *  under the License.
+ */
 
-#import "NSInvocationOCMAdditionsTests.h"
+#import <XCTest/XCTest.h>
 #import "NSInvocation+OCMAdditions.h"
 
-#define TestString @"foo"
-#define TestInt 1
+
+@implementation NSValue(OCMTestAdditions)
+
+- (id)ocmtest_initWithLongDouble:(long double)ldbl
+{
+    return [self initWithBytes:&ldbl objCType:@encode(__typeof__(ldbl))];
+}
+
+@end
+
+
+@interface NSInvocationOCMAdditionsTests : XCTestCase
+
+@end
+
 
 @implementation NSInvocationOCMAdditionsTests
 
 - (void)testInvocationDescriptionWithNoArguments
 {
 	SEL selector = @selector(lowercaseString);
-	NSMethodSignature *signature = [[NSString string] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	
-	STAssertEqualObjects(@"lowercaseString", [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(@"lowercaseString", [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithObjectArgument
 {
 	SEL selector = @selector(isEqualToNumber:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSNumber *argument = [NSNumber numberWithInt:TestInt];
+	NSNumber *argument = @1;
 	[invocation setArgument:&argument atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", TestInt];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"isEqualToNumber:%d", 1];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithNSStringArgument
 {
 	SEL selector = @selector(isEqualToString:);
-	NSMethodSignature *signature = [[NSString string] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSString *argument = TestString;
+	NSString *argument = @"TEST_STRING";
 	[invocation setArgument:&argument atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", TestString];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"isEqualToString:@\"%@\"", @"TEST_STRING"];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithObjectArguments
 {
 	SEL selector = @selector(setValue:forKey:);
-	NSMethodSignature *signature = [[NSArray array] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSArray instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it two arguments
-	NSNumber *argumentOne = [NSNumber numberWithInt:TestInt];
-	NSString *argumentTwo = TestString;
+	NSNumber *argumentOne = @1;
+	NSString *argumentTwo = @"TEST_STRING";
 	[invocation setArgument:&argumentOne atIndex:2];
 	[invocation setArgument:&argumentTwo atIndex:3];
 	
-	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", TestInt, TestString];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"setValue:%d forKey:@\"%@\"", 1, @"TEST_STRING"];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithArrayArgument
 {
 	SEL selector = @selector(addObjectsFromArray:);
-	NSMethodSignature *signature = [[NSMutableArray array] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSMutableArray instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it one argument (starts at index 2)
-	NSArray *argument = [NSArray arrayWithObject:TestString];
+	NSArray *argument = @[@"TEST_STRING"];
 	[invocation setArgument:&argument atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"addObjectsFromArray:%@", [argument description]];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithIntArgument
 {
 	SEL selector = @selector(initWithInt:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	int argumentOne = TestInt;
+	int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", TestInt];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"initWithInt:%d", 1];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedIntArgument
 {
 	SEL selector = @selector(initWithUnsignedInt:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	unsigned int argumentOne = TestInt;
+	unsigned int argumentOne = 1;
 	[invocation setArgument:&argumentOne atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", TestInt];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedInt:%d", 1];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithBoolArgument
 {
 	SEL selector = @selector(initWithBool:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -118,13 +142,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithBool:YES"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithCharArgument
 {
 	SEL selector = @selector(initWithChar:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -132,15 +156,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithChar:'%c'", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedCharArgument
 {
-	NSNumber *dummyNumber = [NSNumber alloc];
-	
 	SEL selector = @selector(initWithUnsignedChar:);
-	NSMethodSignature *signature = [dummyNumber methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -148,13 +170,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedChar:'%c'", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithDoubleArgument
 {
 	SEL selector = @selector(initWithDouble:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -162,13 +184,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithDouble:%f", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithFloatArgument
 {
 	SEL selector = @selector(initWithFloat:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -176,13 +198,27 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithFloat:%f", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
+}
+
+- (void)testInvocationDescriptionWithLongDoubleArgument
+{
+	SEL selector = @selector(ocmtest_initWithLongDouble:);
+	NSMethodSignature *signature = [NSValue instanceMethodSignatureForSelector:selector];
+	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+	[invocation setSelector:selector];
+	// Give it an argument
+	long double argumentOne = 1;
+	[invocation setArgument:&argumentOne atIndex:2];
+	
+	NSString *expected = [NSString stringWithFormat:@"%@%Lf", NSStringFromSelector(selector),argumentOne];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithLongArgument
 {
 	SEL selector = @selector(initWithLong:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -190,13 +226,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithLong:%ld", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedLongArgument
 {
 	SEL selector = @selector(initWithUnsignedLong:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -204,13 +240,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLong:%lu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithLongLongArgument
 {
 	SEL selector = @selector(initWithLongLong:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -218,13 +254,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithLongLong:%qi", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedLongLongArgument
 {
 	SEL selector = @selector(initWithUnsignedLongLong:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -232,13 +268,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedLongLong:%qu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithShortArgument
 {
 	SEL selector = @selector(initWithShort:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -246,13 +282,13 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithShort:%hi", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithUnsignedShortArgument
 {
 	SEL selector = @selector(initWithUnsignedShort:);
-	NSMethodSignature *signature = [[NSNumber alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSNumber instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -260,59 +296,58 @@
 	[invocation setArgument:&argumentOne atIndex:2];
 
 	NSString *expected = [NSString stringWithFormat:@"initWithUnsignedShort:%hu", argumentOne];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
-/*
+
 - (void)testInvocationDescriptionWithStructArgument
 {
-	SEL selector = @selector(setFrameSize:);
-	NSMethodSignature *signature = [[[NSView alloc] init] methodSignatureForSelector:selector];
+	SEL selector = @selector(substringWithRange:);
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	NSSize size;
-	size.width = 1;
-	size.height = 1;
-	[invocation setArgument:&size atIndex:2];
+	NSRange range;
+	range.location = 2;
+	range.length = 4;
+	[invocation setArgument:&range atIndex:2];
 	
-	NSString *expected = [NSString stringWithFormat:@"setFrameSize:(struct)"];
-	STAssertTrue(expected, [[invocation invocationDescription] rangeOfString:description].length > 0, @"");
+	NSString *expected = @"substringWithRange:(NSRange: {2, 4})";
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
-*/
-/*
+
 - (void)testInvocationDescriptionWithCStringArgument
 {
 	SEL selector = @selector(initWithUTF8String:);
-	NSMethodSignature *signature = [[NSString alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	NSString *string = [NSString stringWithString:@"foo"];
+	NSString *string = @"A string that is longer than 100 characters. 123456789 123456789 123456789 123456789 123456789 123456789";
 	const char *cString = [string UTF8String]; 
 	[invocation setArgument:&cString atIndex:2];
 
-	NSString *expected = @"initWithUTF8String:\"foo\"";
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	NSString *expected = [NSString stringWithFormat:@"initWithUTF8String:\"%@...\"", [string substringToIndex:100]];
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
-*/
+
 - (void)testInvocationDescriptionWithSelectorArgument
 {
 	SEL selector = @selector(respondsToSelector:);
-	NSMethodSignature *signature = [[NSString alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
-	SEL selectorValue = @selector(foo);
+	SEL selectorValue = @selector(testInvocationDescriptionWithSelectorArgument);
 	[invocation setArgument:&selectorValue atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"respondsToSelector:@selector(%@)", NSStringFromSelector(selectorValue)];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 - (void)testInvocationDescriptionWithPointerArgument
 {
 	SEL selector = @selector(initWithBytes:length:);
-	NSMethodSignature *signature = [[NSData alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSData instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -323,16 +358,16 @@
 	[invocation setArgument:&length atIndex:3];
 	
 	NSString *expected1 = [NSString stringWithFormat:@"initWithBytes:"];
-	NSString *expected2 = [NSString stringWithFormat:@"length:%ld", length];
+	NSString *expected2 = [NSString stringWithFormat:@"length:%lu", (unsigned long)length];
 	NSString *invocationDescription = [invocation invocationDescription];
-	STAssertTrue([invocationDescription rangeOfString:expected1].length > 0, @"");
-	STAssertTrue([invocationDescription rangeOfString:expected2].length > 0, @"");
+	XCTAssertTrue([invocationDescription rangeOfString:expected1].length > 0, @"");
+	XCTAssertTrue([invocationDescription rangeOfString:expected2].length > 0, @"");
 }
 
 - (void)testInvocationDescriptionWithNilArgument
 {
 	SEL selector = @selector(initWithString:);
-	NSMethodSignature *signature = [[NSString alloc] methodSignatureForSelector:selector];
+	NSMethodSignature *signature = [NSString instanceMethodSignatureForSelector:selector];
 	NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
 	[invocation setSelector:selector];
 	// Give it an argument
@@ -340,7 +375,7 @@
 	[invocation setArgument:&argString atIndex:2];
 	
 	NSString *expected = [NSString stringWithFormat:@"initWithString:nil"];
-	STAssertEqualObjects(expected, [invocation invocationDescription], @"");
+	XCTAssertEqualObjects(expected, [invocation invocationDescription], @"");
 }
 
 @end
